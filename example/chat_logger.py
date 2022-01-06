@@ -24,11 +24,11 @@ class ChatLogger(MCWSS):
         }
 
     @classmethod
-    def on_start(cls, _host: str, port: int):
+    def on_start(cls, host: str, port: int):
         """
         on server start
         """
-        MCWSS.on_start(_host, port)
+        MCWSS.on_start(host, port)
         print('/connect %s:%d' % (get_lan_ip(), port))
 
     async def on_conn(self):
