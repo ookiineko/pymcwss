@@ -7,7 +7,6 @@ from abc import ABC, abstractmethod
 from asyncio import get_event_loop, AbstractEventLoop
 from json import loads, dumps, JSONDecodeError
 from traceback import format_exc
-from typing import Callable, Awaitable, Any
 
 from websockets.exceptions import ConnectionClosed
 from websockets.legacy.server import serve, WebSocketServerProtocol
@@ -86,15 +85,12 @@ class MCWSS(ABC):
             cls,
             port: int,
             host: str = '',
-            ws_handler: Callable[[WebSocketServerProtocol, str], Awaitable[Any]] = None,
             event_loop: AbstractEventLoop = get_event_loop()
     ):
         """
         start server
         """
-        if not ws_handler:
-            ws_handler = cls.ws_handler
-        wss = serve(ws_handler, host, port)
+        wss = serve(cls.ws_handler, host, port)
         event_loop.run_until_complete(wss)
         cls.on_start(host, port)
         event_loop.run_forever()
