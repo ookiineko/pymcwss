@@ -3,7 +3,7 @@
 Pocket Edition WebSocket API
 """
 from typing import List, Iterable
-from uuid import uuid4
+from uuid import uuid1
 
 # keys
 key_head = 'header'
@@ -343,7 +343,7 @@ def gen_pack(purpose: str) -> dict:
     """
     return {
         key_head: {
-            head_req_id: str(uuid4()),
+            head_req_id: str(uuid1()),
             head_msg_purpose: purpose,
             head_or_body_ver: ver
         },
