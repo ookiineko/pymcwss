@@ -325,9 +325,9 @@ prop_block = 'Block'
 prop_tool_item_type = 'ToolItemType'
 
 # game modes
-mode_survival = 0
-mode_creative = 1
-mode_adventure = 2
+game_mode_survival = 0
+game_mode_creative = 1
+game_mode_adventure = 2
 
 # slots
 slot_armor_shield = 1
@@ -347,8 +347,7 @@ def gen_pack(purpose: str) -> dict:
             head_msg_purpose: purpose,
             head_or_body_ver: ver
         },
-        key_body: {
-        }
+        key_body: {}
     }
 
 
@@ -356,13 +355,13 @@ def gen_sub(event_name: str, unsubscribe: bool = False) -> dict:
     """
     generate subscribe/unsubscribe event packet
     """
-    if not event_name:
-        return {}
-    new = gen_pack(purpose_unsubscribe if unsubscribe else purpose_subscribe)
-    head = get_head(new)
-    head[head_or_prop_msg_type] = msg_cmd_req
-    body = get_body(new)
-    body[body_event_name] = event_name
+    new = {}
+    if event_name:
+        new = gen_pack(purpose_unsubscribe if unsubscribe else purpose_subscribe)
+        head = get_head(new)
+        head[head_or_prop_msg_type] = msg_cmd_req
+        body = get_body(new)
+        body[body_event_name] = event_name
     return new
 
 
@@ -510,7 +509,4 @@ def is_new(prop: dict) -> bool:
     """
     detect backward compatible packet property
     """
-    dna_ignore = prop.get(prop_dna_ignore)
-    if dna_ignore is None:
-        return True
-    return not dna_ignore
+    return prop.get(prop_dna_ignore, True)
