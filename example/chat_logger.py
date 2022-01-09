@@ -8,8 +8,24 @@ from pymcwss.pewsapi import event_player_msg, \
     purpose_event, get_event_name, get_msg_type, msg_chat, \
     msg_say, msg_tell, gen_all_subs, gen_sub, par_player_msg
 from websockets.legacy.server import WebSocketServerProtocol
+from socket import socket, AF_INET, SOCK_DGRAM, error
+from traceback import format_exc
 
-from util import get_lan_ip
+
+def get_lan_ip():
+    """
+    get LAN ip
+    """
+    sock = socket(AF_INET, SOCK_DGRAM)
+    try:
+        sock.connect(('1.2.3.4', 1))
+        ip = sock.getsockname()[0]
+    except error:
+        print(format_exc())
+        ip = '127.0.0.1'
+    finally:
+        sock.close()
+    return ip
 
 
 class ChatLogger(MCWSS):
