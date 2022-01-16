@@ -25,6 +25,8 @@ class MCWSS(ABC):
         """
         sever main loop
         """
+        if self.connected or self.__ws.open:
+            return
         await self.on_conn()
         while self.__ws.open:
             try:
@@ -40,7 +42,7 @@ class MCWSS(ABC):
         """
         send packet
         """
-        if packet and self.connected:
+        if packet and self.connected and self.__ws.open:
             await self.__ws.send(dumps(packet))
 
     @abstractmethod
@@ -48,6 +50,8 @@ class MCWSS(ABC):
         """
         on client connected
         """
+        if self.connected or not self.__ws.open:
+            return
         self.connected = True
 
     @abstractmethod
@@ -55,6 +59,8 @@ class MCWSS(ABC):
         """
         on client disconnected
         """
+        if not self.connected or self.__ws.open:
+            return
         self.connected = False
 
     @abstractmethod

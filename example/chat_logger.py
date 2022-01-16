@@ -6,7 +6,7 @@ from pymcwss.mcwss import MCWSS
 from pymcwss.pewsapi import event_player_msg, \
     get_head, get_body, get_prop, get_msg_purpose, \
     purpose_event, get_event_name, get_msg_type, msg_chat, \
-    msg_say, msg_tell, gen_all_subs, gen_sub, par_player_msg
+    msg_say, msg_tell, gen_sub, par_player_msg
 from websockets.legacy.server import WebSocketServerProtocol
 from socket import socket, AF_INET, SOCK_DGRAM, error
 from traceback import format_exc
@@ -53,8 +53,6 @@ class ChatLogger(MCWSS):
         """
         await MCWSS.on_conn(self)
         print('Minecraft connected')
-        for packet in gen_all_subs(self.__subs, True):
-            await self.send(packet)
         for sub in self.__subs:
             packet = gen_sub(sub)
             await self.send(packet)
